@@ -1,0 +1,31 @@
+\c postgres;
+DROP DATABASE IF EXISTS employee_manager;
+
+CREATE DATABASE employee_manager;
+
+\c employee_manager;
+
+CREATE TABLE departments (
+	id SERIAL PRIMARY KEY, --REFERENCED
+	dep_name VARCHAR (30) UNIQUE NOT NULL
+);
+
+
+CREATE TABLE roles (
+	id SERIAL PRIMARY KEY, --REFERENCED
+	title VARCHAR(30) UNIQUE NOT NULL,
+	salary DECIMAL NOT NULL,
+    department_id INTEGER NOT NULL,
+	FOREIGN KEY (department_id) REFERENCES departments(id) --HOLDS REFERENCE TO DEP. ROLE
+);
+
+
+CREATE TABLE employees (
+	id SERIAL PRIMARY KEY, --REFERENCED
+	first_name VARCHAR (30) NOT NULL,
+	last_name VARCHAR (30) NOT NULL,
+    role_id INTEGER NOT NULL, --HOLDS REFERENCE TO EMPLOYEE ROLE
+    manager_id INTEGER, 
+	FOREIGN KEY (role_id) REFERENCES roles(id),  --HOLDS REFERENCE TO EMPLOYEE ROLE
+	FOREIGN KEY (manager_id) REFERENCES employees(id) --HOLDS REFERENCE TO ANOTHER EMPLOYEE THAT IS THE MANAGER
+);
